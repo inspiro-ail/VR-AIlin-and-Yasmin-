@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VR-профориентатор с ИИ | Сейфуллина Ясмин & Айлин</title>
+    <!-- Шрифты и базовые стили -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* хедер */
+        .hero {
+            background: linear-gradient(145deg, #0b1e33 0%, #1e3a5f 100%);
+            color: white;
+            padding: 60px 0 80px 0;
+            clip-path: polygon(0 0, 100% 0, 100% 90%, 0 100%);
+            margin-bottom: 40px;
+        }
+
+        .hero-content {
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero .subhead {
+            font-size: 1.4rem;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 30px;
+            border-left: 5px solid #3b82f6;
+            padding-left: 25px;
+        }
+
+        .author-badge {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            background: rgba(255,255,255,0.1);
+            padding: 20px 30px;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            margin-top: 30px;
+            font-weight: 500;
+        }
+
+        .author-badge span {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin: 60px 0 30px 0;
+            color: #0b1e33;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100px;
+            height: 5px;
+            background: #3b82f6;
+            border-radius: 3px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 32px;
+            padding: 30px;
+            box-shadow: 0 15px 30px -10px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #e9eef2;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 30px 40px -15px rgba(0,40,100,0.25);
+            border-color: #bdd3ff;
+        }
+
+        .card h3 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1e3a5f;
+        }
+
+        .card p {
+            color: #334155;
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+
+        .stat-badge {
+            background: #e6f0ff;
+            color: #1e4a7a;
+            padding: 6px 16px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .quote-block {
+            background: #f0f6ff;
+            border-radius: 40px;
+            padding: 40px;
+            margin: 50px 0;
+            border: 1px solid #cddfff;
+            font-style: normal;
+        }
+
+        .pipeline {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 15px;
+            margin: 60px 0;
+            counter-reset: step;
+        }
+
+        .step {
+            flex: 1 1 200px;
+            background: white;
+            border-radius: 40px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+            border: 1px solid #dee7ed;
+            position: relative;
+            counter-increment: step;
+        }
+
+        .step::before {
+            content: counter(step);
+            background: #1e3a5f;
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+
+        .step h4 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .tech-tag {
+            display: inline-block;
+            background: #e2e8f0;
+            padding: 6px 14px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin: 5px 8px 5px 0;
+            color: #1e293b;
+        }
+
+        .datahub-section {
+            background: #0f1825;
+            color: white;
+            border-radius: 60px;
+            padding: 50px;
+            margin: 60px 0;
+        }
+
+        .datahub-section h2 {
+            color: white;
+        }
+
+        .datahub-section .section-title::after {
+            background: #90b4ff;
+        }
+
+        .review {
+            background: #f1f5f9;
+            border-radius: 40px;
+            padding: 35px;
+            margin: 40px 0;
+            border-left: 8px solid #2563eb;
+        }
+
+        .review p {
+            font-size: 1.15rem;
+            margin-bottom: 15px;
+        }
+
+        .review-author {
+            font-weight: 700;
+            color: #0b1e33;
+        }
+
+        .footer {
+            background: #0b1e33;
+            color: white;
+            padding: 40px 0;
+            margin-top: 80px;
+            text-align: center;
+            border-radius: 40px 40px 0 0;
+        }
+
+        .footer a {
+            color: #a5c9ff;
+            text-decoration: none;
+        }
+
+        @media (max-width: 700px) {
+            .hero h1 { font-size: 2.3rem; }
+            .hero { clip-path: polygon(0 0, 100% 0, 100% 96%, 0 100%); }
+            .author-badge { flex-direction: column; gap: 10px; border-radius: 30px; }
+            .card-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ГЕРО -->
+    <section class="hero">
+        <div class="container hero-content">
+            <h1>VR-симулятор профориентатор<br>с искусственным интеллектом</h1>
+            <div class="subhead">Объединяем виртуальную реальность и ИИ, чтобы школьники могли осознанно выбрать профессию без стресса</div>
+            <div class="author-badge">
+                <span>🧑‍🎓 Сейфуллина Ясмин, 11″В”</span>
+                <span>👩‍🎓 Сейфуллина Айлин, 9″В”</span>
+                <span>🔬 руководитель: Исмаилов К.Т.</span>
+                <span>🏫 КГУ «Школа-лицей Информационных технологий», Караганда</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+
+        <!-- АННОТАЦИЯ (рус/англ) -->
+        <div class="quote-block">
+            <p style="font-size: 1.2rem; margin-bottom: 20px;">📌 <strong>Аннотация</strong> — разработан инновационный метод профориентации на базе VR и ИИ. Ученик погружается в виртуальную среду, пробует профессии (программист, врач, учитель, дизайнер) и получает рекомендации от ИИ-наставника. После симуляции — подбор вузов Казахстана через DATAHUB. Проект снижает тревожность и повышает осознанность выбора.</p>
+            <p style="color: #2563eb;"><em>Annotation: An innovative career guidance VR simulator with AI helps students make informed choices through immersive practice and personalized AI mentoring.
+                It includes a test, VR scenarios, and a university data hub.</em></p>
+        </div>
+
+        <!-- ВВЕДЕНИЕ + ПРОБЛЕМА -->
+        <h2 class="section-title">Введение & постановка проблемы</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 30px;">
+            <div style="flex: 2; min-width: 280px;">
+                <p style="font-size: 1.2rem;">Традиционные методы профориентации часто дают лишь поверхностное представление о профессиях. <strong>66,4% опрошенных школьников</strong> испытывают трудности при выборе будущей специальности (по данным нашего опроса, N=568).</p>
+                <p style="margin-top: 20px;">Недостаток практики, страх ошибки и непонимание своих реальных склонностей ведут к разочарованию и дефициту мотивированных специалистов. Наш VR-симулятор с ИИ-наставником позволяет «примерить» профессию в безопасной, увлекательной среде.</p>
+            </div>
+            <div style="flex: 1; background: #e2f0ff; border-radius: 30px; padding: 25px; text-align: center;">
+                <div style="font-size: 4rem; font-weight: 700; color: #1e3a5f;">66,4%</div>
+                <div>испытывают трудности при выборе профессии</div>
+                <div style="margin-top: 15px; font-size: 0.9rem;">(опрос в рамках проекта)</div>
+            </div>
+        </div>
+
+        <!-- ЦЕЛЬ И ЗАДАЧИ -->
+        <h2 class="section-title">Цель и задачи</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>🎯 Цель</h3>
+                <p>Создать VR-симулятор с искусственным интеллектом, который поможет школьникам 9–11 классов осознанно выбрать профессию через погружение в виртуальные рабочие среды и диалог с ИИ-наставником.</p>
+            </div>
+            <div class="card">
+                <h3>✅ Задачи</h3>
+                <ul style="padding-left: 20px; color: #334155;">
+                    <li>Анализ существующих методов профориентации</li>
+                    <li>Выбор движка (Unity) и ИИ-платформы (OpenAI)</li>
+                    <li>Разработка VR-сценариев (программист, врач, учитель, дизайнер)</li>
+                    <li>Создание ИИ-оценщика и наставника</li>
+                    <li>Интеграция с DATAHUB вузов Казахстана</li>
+                    <li>Тестирование и сбор обратной связи</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ТРИ ЭТАПА -->
+        <h2 class="section-title">Архитектура решения: 3 этапа</h2>
+        <div class="pipeline">
+            <div class="step">
+                <h4>🎮 Традиционный тест</h4>
+                <p>30 вопросов в игровой форме — определяем начальные склонности.</p>
+            </div>
+            <div class="step">
+                <h4>🥽 VR-погружение + ИИ-наставник</h4>
+                <p>Ученик оказывается в реалистичной комнате (офис, больница, класс, студия) и выполняет задания. ИИ наблюдает, подсказывает, общается.</p>
+            </div>
+            <div class="step">
+                <h4>📊 Оценка и ВУЗы</h4>
+                <p>ИИ выставляет звёздный рейтинг (от 1 до 5) по действиям. После этого DATAHUB рекомендует подходящие университеты Казахстана.</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">Доступные VR‑профессии</h2>
+        <div class="card-grid">
+            <div class="card">
+                <span class="stat-badge">Сценарий #1</span>
+                <h3 style="margin-top: 15px;">💻 Программист</h3>
+                <p>IT-офис с современными мониторами, креслами, ноутбуками. Нужно запрограммировать робота так, чтобы он прошёл лабиринт.</p>
+            </div>
+            <div class="card">
+                <span class="stat-badge">Сценарий #2</span>
+                <h3 style="margin-top: 15px;">🩺 Врач</h3>
+                <p>Виртуальная больница: пациент (бот с ИИ), медкарта, стетоскоп. Осмотреть, поставить диагноз, назначить лечение.</p>
+            </div>
+            <div class="card">
+                <span class="stat-badge">Сценарий #3</span>
+                <h3 style="margin-top: 15px;">📚 Учитель</h3>
+                <p>Класс, парты, дети-боты. Объяснить сложение и вычитание, проверить контрольные работы.</p>
+            </div>
+            <div class="card">
+                <span class="stat-badge">Сценарий #4</span>
+                <h3 style="margin-top: 15px;">🎨 Дизайнер</h3>
+                <p>Художественная студия, холсты, графические планшеты. Повторить рисунок.</p>
+            </div>
+            <div class="card">
+                <span class="stat-badge">Сценарий #5</span>
+                <h3 style="margin-top: 15px;"> 🧠 Психолог</h3>
+                <p>Кабинет психолога, мягкие кресла, доска с диаграммами. Провести беседу с клиентом, выявить проблемы.</p>
+            </div>
+             <div class="card">
+                <span class="stat-badge">Сценарий #6</span>
+                <h3 style="margin-top: 15px;"> 🧑‍⚖️ Судья</h3>
+                <p>Кабинет судьи, стол, стул, доска с диаграммами. Провести судебное разбирательство, вынести решение.</p>
+            </div>
+        </div>
+
+
+        <div style="background: white; border-radius: 50px; padding: 30px; margin: 40px 0;">
+            <h2 class="section-title" style="margin-top: 0;">Используемые технологии</h2>
+            <div>
+                <span class="tech-tag">Unity + C#</span>
+                <span class="tech-tag">Blender / TinkerCad (3D-модели)</span>
+                <span class="tech-tag">OpenAI API</span>
+                <span class="tech-tag">SpeechRecognition</span>
+                <span class="tech-tag">pyttsx3</span>
+                <span class="tech-tag">Flask API</span>
+                <span class="tech-tag">Python (бэкенд ИИ)</span>
+                <span class="tech-tag">BeautifulSoup / Requests</span>
+                <span class="tech-tag">SQL / NoSQL</span>
+                <span class="tech-tag">HTML, CSS, JS (фронтенд DATAHUB)</span>
+            </div>
+        </div>
+
+        <!-- DATAHUB -->
+        <div class="datahub-section">
+            <h2 class="section-title">📀 DATAHUB вузов Республики Казахстан</h2>
+            <p style="font-size: 1.3rem; opacity: 0.95;">Единая цифровая платформа, где собраны все университеты Казахстана. После VR-симуляции ученик получает персонализированный список вузов по выбранному направлению.</p>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; margin-top: 30px;">
+                <div style="background: #1e2f42; padding: 20px; border-radius: 30px; flex:1;">
+                    <strong style="color:#96c0ff;">⚙️ Автоматический сбор данных</strong><br>
+                    Web-парсинг (BeautifulSoup, Requests) с официальных сайтов.
+                </div>
+                <div style="background: #1e2f42; padding: 20px; border-radius: 30px; flex:1;">
+                    <strong style="color:#96c0ff;">🗄️ REST API + SQL/NoSQL</strong><br>
+                    Хранение и обмен данными с основным симулятором.
+                </div>
+                <div style="background: #1e2f42; padding: 20px; border-radius: 30px; flex:1;">
+                    <strong style="color:#96c0ff;">🔄 Автообновление</strong><br>
+                    Регулярный парсинг для актуальности информации.
+                </div>
+            </div>
+        </div>
+
+        <!-- КАК РАБОТАЕТ ИИ (оценка) -->
+        <h2 class="section-title">🧠 Искусственный интеллект в проекте</h2>
+        <div class="card-grid">
+            <div class="card">
+                <h3>🗣️ ИИ-наставник</h3>
+                <p>На базе OpenAI (LLM) + SpeechRecognition. Общается с учеником, даёт задания в реальном времени, отвечает на вопросы, подбадривает. Адаптируется под действия.</p>
+            </div>
+            <div class="card">
+                <h3>⭐ Оценка действий</h3>
+                <p>После симуляции ИИ анализирует каждое действие пользователя и ставит оценку по 5‑звёздной шкале. Объясняет, что было правильно, а что стоит улучшить именно в этой профессии.</p>
+            </div>
+            <div class="card">
+                <h3>📈 Рекомендация вузов</h3>
+                <p>На основе успешности и выбранной профессии DATAHUB формирует список вузов Казахстана с подходящими программами.</p>
+            </div>
+        </div>
+
+        <!-- ОТЗЫВЫ (два из PDF) -->
+        <h2 class="section-title">Отзывы</h2>
+        <div class="review">
+            <p>«Проект «VR-симулятор профориентатора с ИИ» заслуживает особого внимания благодаря актуальности и практической значимости. Работа объединяет современные технологии VR и ИИ, что позволяет продемонстрировать высокий уровень знаний и способность интегрировать научные направления.
+                Учащиеся проявили исследовательские и конструкторские навыки, умение работать в команде.»</p>
+            <div class="review-author">— Исмаилов К.Т., учитель физики</div>
+        </div>
+        <div class="review">
+            <p>«Проект является актуальной и перспективной разработкой, направленной на решение важной социальной задачи — помощи школьникам в выборе будущей профессии. Использование технологий виртуальной реальности и ИИ способствует повышению интереса к процессу самоопределения. Работа носит исследовательско-практический характер и может быть рекомендована к внедрению.»</p>
+            <div class="review-author">— Жумагулова С.К., профессор КарУ им. Е.А.Букетова</div>
+        </div>
+
+        <!-- ДНЕВНИК (коротко выдержки) -->
+        <h2 class="section-title">Дневник разработки (фрагменты)</h2>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin: 40px 0;">
+            <div style="background: #f2f6fc; padding: 20px; border-radius: 25px;"><strong>15.05.25</strong><br>Определили 4 профессии: программист, врач, учитель, дизайнер. Начали писать параметры VR-взаимодействия.</div>
+            <div style="background: #f2f6fc; padding: 20px; border-radius: 25px;"><strong>30.05.25</strong><br>Создали 3D-модели в Blender и TinkerCad, распределили по сценам.</div>
+            <div style="background: #f2f6fc; padding: 20px; border-radius: 25px;"><strong>21.06.25</strong><br>Выбрали OpenAI как основу для ИИ. Сравнивали Ollama, Gemini, DeepSeek — остановились на OpenAI (интеграция с Unity/Python).</div>
+            <div style="background: #f2f6fc; padding: 20px; border-radius: 25px;"><strong>02.08.25</strong><br>Протестировали симулятор на 11 учениках. Получили высокие оценки за реализм и полезность.</div>
+        </div>
+
+        <!-- ЗАКЛЮЧЕНИЕ -->
+        <h2 class="section-title">Заключение и перспективы</h2>
+        <div style="background: #e4ecf7; border-radius: 40px; padding: 40px;">
+            <p style="font-size: 1.2rem;">Проект доказал: совмещение VR и ИИ позволяет снизить стресс при выборе профессии и дать школьникам реальный практический опыт. В дальнейшем планируем:</p>
+            <ul style="margin-top: 20px; columns: 2; list-style: circle; padding-left: 30px;">
+                <li>Добавить новые профессии (инженер, юрист, архитектор)</li>
+                <li>Улучшить диалоговую систему ИИ (больше естественности)</li>
+                <li>Внедрить симулятор в школы и центры профориентации</li>
+                <li>Расширить DATAHUB колледжами и международными программами</li>
+            </ul>
+        </div>
+
+        <!-- ЛИТЕРАТУРА -->
+        <div style="margin: 60px 0;">
+            <h2 class="section-title">Использованная литература</h2>
+            <ul style="list-style: none;">
+                <li>🔗 habr.com/ru/companies/otus/articles/685506 — Как использовать VR через Unity</li>
+                <li>🔗 pythonhelp.ru/python/kak-sdelat-raspoznavanie-rechi — Распознавание речи на Python</li>
+                <li>🔗 pypi.org/project/yandex-speechkit</li>
+                <li>🔗 habr.com/ru/articles/775070 — Обучение ИИ</li>
+                <li>🔗 habr.com/ru/companies/selectel/articles/914460 — Работа с VR</li>
+            </ul>
+        </div>
+
+    </div> <!-- контейнер -->
+
+    <footer class="footer">
+        <div class="container">
+            <p>VR-профориентатор с ИИ — проект Сейфуллиной Ясмин и Сейфуллиной Айлин, 2025</p>
+            <p>КГУ «Школа-лицей Информационных технологий», Караганда</p>
+            <p style="margin-top: 20px; font-size: 0.9rem;">Руководитель: Исмаилов Кайрат Тулегенович | Секция: Информатика, Математическое моделирование</p>
+        </div>
+    </footer>
+
+</body>
+</html>
